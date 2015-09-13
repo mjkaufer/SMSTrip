@@ -56,7 +56,7 @@ function handleText(number, body){
 		else
 			peopleMap[number] = new Person(number)
 
-		var methodOfTransportation = body.substring(0, initiationPhrase.length).trim().toLowerCase()
+		var methodOfTransportation = body.substring(initiationPhrase.length).trim().toLowerCase()
 
 		if(modes.indexOf(methodOfTransportation) == -1)
 			return sendText(number, methodOfTransportation + " is not a valid method of transportation! Valid methods are " + modes.toString().replace(/\,/g, ", "))
