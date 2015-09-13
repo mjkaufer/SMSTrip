@@ -25,7 +25,8 @@ Person.prototype.getSteps = function(){
 }
 
 Person.prototype.currentStep = function(){
-	return formatHTMLInstructions(this.getSteps()[this.directionIndex].html_instructions);
+	var step = this.getSteps()[this.directionIndex]
+	return formatHTMLInstructions(step.html_instructions) + " for " + step.duration.text + " or " + step.distance.text;
 }
 
 function formatHTMLInstructions(html){
