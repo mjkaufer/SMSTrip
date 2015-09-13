@@ -84,7 +84,8 @@ function handleText(number, body){
 		return getDirections(person.start, person.end, person.mode, function(body){
 			console.log(body);
 			peopleMap[number].steps = body.routes[0].legs
-			sendText(number, "Now, text '" + progressionPhrase + "' to get the next set of directions!")
+			var duration = body.routes[0].legs.duration.text
+			sendText(number, "Your route will take you " + duration + ". Now, text '" + progressionPhrase + "' to get the next set of directions!")
 		})
 	}
 
