@@ -1,0 +1,24 @@
+{
+  "name": "SMSTrip",
+  "version": "1.0.0",
+  "description": "Twilio powered directions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mjkaufer/SMSTrip"
+  },
+  "author": "Matthew Kaufer (@mjkaufer)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjkaufer/SMSTrip/issues"
+  },
+  "homepage": "https://github.com/mjkaufer/SMSTrip",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "twilio": "^2.3.0"
+  }
+}
