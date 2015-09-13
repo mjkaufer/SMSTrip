@@ -4,6 +4,7 @@ var Person = function(number){
 	this.steps = [];
 	this.start = null;
 	this.end = null;
+	this.mode = null;
 	this.started = false;
 
 }
@@ -13,6 +14,7 @@ Person.prototype.reset = function(){
 	this.steps = [];
 	this.start = null;
 	this.end = null;
+	this.mode = null;
 	this.started = false;
 	return true;
 }

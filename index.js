@@ -22,13 +22,15 @@ var bTagRegex = /\\(u.{4}).*?\\u.{4}/gi;
 
 var peopleMap = {}
 
-var initiationPhrase = "give me directions";
+var initiationPhrase = "!start";
+
+var modes = ["driving", "walking", "bicyling", "transit"]
 
 var progressionPhrase = "next";
 
-function getDirections(location, destination, callback){
+function getDirections(location, destination, mode, callback){
 
-	https.get('https://maps.googleapis.com/maps/api/directions/json?origin=' + encodeURI(location) + '&destination=' + encodeURI(destination) + '&key=' + googleDirectionKey, function(res){
+	https.get('https://maps.googleapis.com/maps/api/directions/json?origin=' + encodeURI(location) + '&destination=' + encodeURI(destination) + '&key=' + googleDirectionKey + '&mode=' + mode , function(res){
 
 		var body = ""
 		res.on("data", function(data){
@@ -42,8 +44,9 @@ function getDirections(location, destination, callback){
 	})
 }
 
-function initiate(number){
-	return sendText(number, "Text '" + initiationPhrase + "' to get started")
+function initiate(number, body){
+	return sendText(number, "Text '" + initiationPhrase + "' followed by your travel method to begin (" + modes.toString().replace(/\,/g, ", ") + ")\n" + 
+							"For example: '" + initiationPhrase + " transit'")
 }
 
 function handleText(number, body){
@@ -53,14 +56,20 @@ function handleText(number, body){
 		else
 			peopleMap[number] = new Person(number)
 
-		peopleMap[number].started = true
+		var methodOfTransportation = body.substring(0, initiationPhrase.length).trim().toLowerCase()
+
+		if(modes.indexOf(methodOfTransportation) == -1)
+			return sendText(number, methodOfTransportation + " is not a valid method of transportation! Valid methods are " + modes.toString().replace(/\,/g, ", "))
+
+
+		peopleMap[number].mode = methodOfTransportation
 
 		return sendText(number, "Ok, text your start location now")
 	}
 
 	var person = peopleMap[number]
 
-	if(!person || !person.started){
+	if(!person || !person.mode){
 		return initiate(number)
 	}
 
@@ -72,7 +81,7 @@ function handleText(number, body){
 	else if(person.end === null){
 		person.end = body;
 
-		return getDirections(person.start, person.end, function(body){
+		return getDirections(person.start, person.end, person.mode, function(body){
 			console.log(body);
 			peopleMap[number].steps = body.routes[0].legs
 			sendText(number, "Now, text '" + progressionPhrase + "' to get the next set of directions!")
