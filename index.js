@@ -83,9 +83,22 @@ function handleText(number, body){
 
 		return getDirections(person.start, person.end, person.mode, function(body){
 			console.log(body);
+
+			if(body.status === "ZERO_RESULTS" || body.status === "NOT_FOUND"){
+				sendText(number, "Your route does not exist.")
+				return initiate(number, body)
+			}
+
 			peopleMap[number].steps = body.routes[0].legs
-			var duration = body.routes[0].legs.duration.text
-			sendText(number, "Your route will take you " + duration + ". Now, text '" + progressionPhrase + "' to get the next set of directions!")
+
+			var durationString = "";
+			
+			if(body.routes[0].legs[0].duration && body.routes[0].legs[0].duration.text){
+				var duration = body.routes[0].legs[0].duration.text
+				durationString = "Your route will take you " + duration + ". ";
+			}
+
+			sendText(number, durationString + "Now, text '" + progressionPhrase + "' to get the next set of directions!")
 		})
 	}
 
