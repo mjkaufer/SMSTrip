@@ -4,7 +4,7 @@ Directions via SMS
 
 ## Usage
 
-Text `give me directions` to the phone number registered. You will be prompted the rest of the way!
+Text `!start [method of transit]` (ex `!start walking`) to the phone number registered. The methods of transit are driving, bicycling, walking, and transit. You will be prompted the rest of the way!
 
 ## Installation
 
