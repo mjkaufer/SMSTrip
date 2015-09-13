@@ -42,6 +42,10 @@ function getDirections(location, destination, callback){
 	})
 }
 
+function initiate(number){
+	return sendText(number, "Text '" + initiationPhrase + "' to get started")
+}
+
 function handleText(number, body){
 	if(body.toLowerCase().indexOf(initiationPhrase) == 0){
 		if(peopleMap[number])
@@ -57,7 +61,7 @@ function handleText(number, body){
 	var person = peopleMap[number]
 
 	if(!person || !person.started){
-		return sendText(number, "Text '" + initiationPhrase + "' to get started")
+		return initiate(number)
 	}
 
 	else if(person.start === null){
@@ -95,12 +99,6 @@ app.post("/twilio_webhook", function(req, res){
 
 })
 
-function init(num){
-	handleText(num, initiationPhrase)
-	handleText(num, "James Madison High School, Vienna VA")
-	handleText(num, "Sunoco Station, Vienna VA")
-}
-
 function sendText(number, body){
 	console.log("Text sent to " + number + " - " + body)
 
@@ -122,7 +120,7 @@ function nextDirections(number){
 	var person = peopleMap[number];
 
 	if(!person.getSteps()){
-		return sendText(number, "Please enter a starting point and a destination!")
+		return initiate(number)
 	}
 
 	if(person.directionIndex >= person.getSteps().length){
